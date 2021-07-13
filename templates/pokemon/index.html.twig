@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voici tout mes Pokemon !{% endblock %}
+
+{% block body %}
+
+    <a href="{{ path('pokemonCreate') }}" class="btn btn-success">Formulaire de création</a>
+
+<div class="row">
+    {% for pokemon in pokemons %}
+        <div class="card" style="width: 18rem;">
+            <img src="{{ pokemon.img }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{ pokemon.name | capitalize }}</h5>
+                <p class="card-text">{{ pokemon.type | capitalize }}</p>
+                <a href="{{ path('pokemonShow', {id : pokemon.id }) }}" class="btn btn-primary">Voir les detail</a>
+                <a href="{{ path('pokemonEdit', {id : pokemon.id }) }}" class="btn btn-info">Formulaire d'editions</a>
+                <a href="{{ path('pokemonDel', {id : pokemon.id }) }}" class="btn btn-danger">Supprimer</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

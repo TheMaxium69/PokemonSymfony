@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire Pokemon{% endblock %}
+
+{% form_theme formPokemon 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+    {% if isCreate %}
+        <h1>Form Create</h1>
+    {% else %}
+        <h1>Form Edit</h1>
+    {% endif %}
+
+    {{ form_start(formPokemon) }}
+
+        {{ form_row(formPokemon.name) }}
+
+        {{ form_row(formPokemon.type) }}
+
+        {{ form_row(formPokemon.img) }}
+
+        {% if isCreate %}
+            <input class="btn btn-success" type="submit" value="Créer">
+        {% else %}
+            <input class="btn btn-success" type="submit" value="Edit">
+        {% endif %}
+
+    {{ form_end(formPokemon) }}
+
+    <hr><a href="{{ path('pokemonIndex') }}" class="btn btn-primary">Retour</a>
+
+{% endblock %}
