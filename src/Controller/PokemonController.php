@@ -7,10 +7,12 @@ use App\Form\PokemonType;
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\File;
+use function PHPUnit\Framework\throwException;
 
 class PokemonController extends AbstractController
 {
@@ -54,16 +56,23 @@ class PokemonController extends AbstractController
         $form = $this->createForm(PokemonType::class, $pokemon);
 
         $form->handleRequest($laRequete);
-        if ($form->isSubmitted())
+        if ($form->isSubmitted() && $form->isValid())
         {
             $imgSend = $form->get('img')->getData();
-            $newNameImage = uniqid().".".$imgSend->guessExtension();
-            $imgSend->move($this->getParameter('images_pokemon'), $newNameImage);
-            $pokemon->setImg($newNameImage);
 
+            if ($imgSend){
+
+                try {
+                    $newNameImage = uniqid() . "." . $imgSend->guessExtension();
+                    $imgSend->move($this->getParameter('images_pokemon'), $newNameImage);
+                    $pokemon->setImg($newNameImage);
+                } catch (FileException $e) {
+                    throw $e;
+                    return $this->redirectToRoute('pokemonIndex');
+                }
+            }
             $manager->persist($pokemon);
             $manager->flush();
-            dump($pokemon);
 
             return $this->redirectToRoute('pokemonShow', [
                 "id" => $pokemon->getId()
