@@ -74,7 +74,7 @@ class PokemonController extends AbstractController
                     return $this->redirectToRoute('pokemonIndex');
                 }
             }
-            
+
             $manager->persist($pokemon);
             $manager->flush();
 
