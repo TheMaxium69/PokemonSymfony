@@ -8,7 +8,9 @@
                 <img src="{{ asset('uploads/images/pokemons/' ~ pokemon.img) }}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ pokemon.name | capitalize }}</h5>
-                    <p class="card-text">{{ pokemon.type | capitalize }}</p>
+                    <p class="card-text">{{ pokemon.type}}</p>
+                    <p class="card-text">{{ pokemon.category.name | capitalize }}</p>
+                    <p class="card-text">{{ pokemon.category.description | capitalize }}</p>
                     <a href="{{ path('pokemonIndex') }}" class="btn btn-primary">Retour</a>
                     <a href="{{ path('pokemonEdit', {id : pokemon.id }) }}" class="btn btn-info">Formulaire d'editions</a>
                     <a href="{{ path('pokemonDel', {id : pokemon.id }) }}" class="btn btn-danger">Supprimer</a>
