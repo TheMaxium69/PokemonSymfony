@@ -21,10 +21,6 @@ class PokemonController extends AbstractController
     {
         $AllPokemon = $repository->findAll();
 
-        foreach ($AllPokemon as $pokemon){
-            $pokemon->setImg($this->getParameter('images_pokemon').$pokemon->getImg());
-        }
-
         return $this->render('pokemon/index.html.twig', [
             'pokemons' => $AllPokemon
         ]);
@@ -36,8 +32,6 @@ class PokemonController extends AbstractController
      */
     public function show(Pokemon $pokemon): Response
     {
-
-        $pokemon->setImg($this->getParameter('images_pokemon').$pokemon->getImg());
 
         return $this->render('pokemon/show.html.twig', [
             'pokemon' => $pokemon
@@ -62,13 +56,18 @@ class PokemonController extends AbstractController
         $form->handleRequest($laRequete);
         if ($form->isSubmitted())
         {
+            $imgSend = $form->get('img')->getData();
+            $newNameImage = uniqid().".".$imgSend->guessExtension();
+            $imgSend->move($this->getParameter('images_pokemon'), $newNameImage);
+            $pokemon->setImg($newNameImage);
+
             $manager->persist($pokemon);
             $manager->flush();
+            dump($pokemon);
 
             return $this->redirectToRoute('pokemonShow', [
                 "id" => $pokemon->getId()
             ]);
-
         }else {
             return $this->render('pokemon/form.html.twig', [
                 'formPokemon' => $form->createView(),
