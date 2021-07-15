@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Pokemon;
 use App\Form\PokemonType;
 use App\Repository\PokemonRepository;
@@ -65,12 +66,15 @@ class PokemonController extends AbstractController
                 try {
                     $newNameImage = uniqid() . "." . $imgSend->guessExtension();
                     $imgSend->move($this->getParameter('images_pokemon'), $newNameImage);
-                    $pokemon->setImg($newNameImage);
+                    if ($modeCreate){
+                        $pokemon->setImg($newNameImage);
+                    }
                 } catch (FileException $e) {
                     throw $e;
                     return $this->redirectToRoute('pokemonIndex');
                 }
             }
+            
             $manager->persist($pokemon);
             $manager->flush();
 
