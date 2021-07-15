@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\File;
 
 class PokemonController extends AbstractController
 {
@@ -19,6 +20,10 @@ class PokemonController extends AbstractController
     public function index(PokemonRepository $repository): Response
     {
         $AllPokemon = $repository->findAll();
+
+        foreach ($AllPokemon as $pokemon){
+            $pokemon->setImg($this->getParameter('images_pokemon').$pokemon->getImg());
+        }
 
         return $this->render('pokemon/index.html.twig', [
             'pokemons' => $AllPokemon
@@ -31,6 +36,9 @@ class PokemonController extends AbstractController
      */
     public function show(Pokemon $pokemon): Response
     {
+
+        $pokemon->setImg($this->getParameter('images_pokemon').$pokemon->getImg());
+
         return $this->render('pokemon/show.html.twig', [
             'pokemon' => $pokemon
         ]);
