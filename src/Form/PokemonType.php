@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Pokemon;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,6 +18,10 @@ class PokemonType extends AbstractType
         $builder
             ->add('name')
             ->add('type')
+            ->add('category', EntityType::class, [
+                "class" => Category::class,
+                "choice_label" => "name"
+            ])
             ->add('img', FileType::class, [
                 'mapped' => false,
                 'constraints' => [

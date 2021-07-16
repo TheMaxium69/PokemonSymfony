@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Pokemon;
+use App\Form\CategoryType;
 use App\Form\PokemonType;
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,7 +44,7 @@ class PokemonController extends AbstractController
 
     /**
      * @Route("/pokemon/create/", name="pokemonCreate")
-     * @Route ("/pokemon/{id}/edit", name="pokemonEdit")
+     * @Route ("/pokemon/edit/{id}", name="pokemonEdit")
      */
     public function new(Pokemon $pokemon = null, Request $laRequete, EntityManagerInterface $manager) : Response
     {
@@ -91,7 +92,7 @@ class PokemonController extends AbstractController
     }
 
     /**
-     * @Route("/pokemon/{id}/del", name="pokemonDel")
+     * @Route("/pokemon/del/{id}", name="pokemonDel")
      */
     public function del(Pokemon $pokemon, EntityManagerInterface $manager){
 
@@ -100,6 +101,29 @@ class PokemonController extends AbstractController
 
 
         return $this->redirectToRoute('pokemonIndex');
+    }
+
+    /**
+     * @Route("/pokemon/category/new", name="categoryCreate")
+     */
+    public function create(Request $requested, EntityManagerInterface $manager) : Response
+    {
+
+        $category = new Category();
+
+        $formCat = $this->createForm(CategoryType::class, $category);
+
+        $formCat->handleRequest($requested);
+        if ($formCat->isSubmitted() && $formCat->isValid()) {
+
+            $manager->persist($category);
+            $manager->flush();
+
+        } else {
+            return $this->render('category/form.html.twig', [
+                'formCategory' => $formCat->createView(),
+            ]);
+        }
     }
 
 }

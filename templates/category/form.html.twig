@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire Pokemon{% endblock %}
+
+{% form_theme formCategory 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+
+        <h1>Form Create</h1>
+
+
+    {{ form_start(formCategory) }}
+
+    {{ form_row(formCategory.name) }}
+
+    {{ form_row(formCategory.description) }}
+
+        <input class="btn btn-success" type="submit" value="Créer">
+
+    {{ form_end(formCategory) }}
+
+    <hr><a href="{{ path('pokemonIndex') }}" class="btn btn-primary">Retour</a>
+
+{% endblock %}
