@@ -16,7 +16,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category", name="categoryIndex")
      */
-    public function index(CategoryRepository $repositoryCat): Response
+    public function jesuisunefonctionazeaz(CategoryRepository $repositoryCat): Response
     {
         $categorys = $repositoryCat->findAll();
 
